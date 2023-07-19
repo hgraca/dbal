@@ -96,4 +96,14 @@ class MySQL57Platform extends MySQLPlatform
 
         $this->doctrineTypeMapping['json'] = Types::JSON;
     }
+
+    /**
+     * Returns the FOR UPDATE expression, as SKIP LOCKED is only available since MySQL8.
+     *
+     * @return string
+     */
+    public function getForUpdateSkipLockedSQL()
+    {
+        return $this->getForUpdateSQL();
+    }
 }

@@ -36,7 +36,6 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\Deprecations\Deprecation;
 use InvalidArgumentException;
 use UnexpectedValueException;
-
 use function addcslashes;
 use function array_map;
 use function array_merge;
@@ -1755,6 +1754,16 @@ abstract class AbstractPlatform
     public function getForUpdateSQL()
     {
         return 'FOR UPDATE';
+    }
+
+    /**
+     * Returns the FOR UPDATE SKIP LOCKED expression.
+     *
+     * @return string
+     */
+    public function getForUpdateSkipLockedSQL()
+    {
+        return $this->getForUpdateSQL() . ' SKIP LOCKED';
     }
 
     /**

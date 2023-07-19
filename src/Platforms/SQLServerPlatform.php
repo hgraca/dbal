@@ -17,7 +17,6 @@ use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Deprecations\Deprecation;
 use InvalidArgumentException;
-
 use function array_merge;
 use function array_unique;
 use function array_values;
@@ -40,7 +39,6 @@ use function str_replace;
 use function strpos;
 use function strtoupper;
 use function substr_count;
-
 use const PREG_OFFSET_CAPTURE;
 
 /**
@@ -1590,7 +1588,7 @@ class SQLServerPlatform extends AbstractPlatform
         return parent::getForeignKeyReferentialActionSQL($action);
     }
 
-    public function appendLockHint(string $fromClause, int $lockMode): string
+    public function appendLockHint(string $fromClause, int $lockMode, bool $skipLocked = false): string
     {
         switch ($lockMode) {
             case LockMode::NONE:
@@ -1601,7 +1599,8 @@ class SQLServerPlatform extends AbstractPlatform
                 return $fromClause . ' WITH (HOLDLOCK, ROWLOCK)';
 
             case LockMode::PESSIMISTIC_WRITE:
-                return $fromClause . ' WITH (UPDLOCK, ROWLOCK)';
+                $lockHints = $skipLocked ? 'UPDLOCK, ROWLOCK, READPAST' : 'UPDLOCK, ROWLOCK';
+                return $fromClause . " WITH ($lockHints)";
 
             default:
                 throw InvalidLockMode::fromLockMode($lockMode);
@@ -1612,6 +1611,14 @@ class SQLServerPlatform extends AbstractPlatform
      * {@inheritDoc}
      */
     public function getForUpdateSQL()
+    {
+        return ' ';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getForUpdateSkipLockedSQL()
     {
         return ' ';
     }

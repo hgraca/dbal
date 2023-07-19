@@ -18,7 +18,6 @@ use Doctrine\DBAL\TransactionIsolationLevel;
 use Doctrine\DBAL\Types;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\Deprecations\Deprecation;
-
 use function array_combine;
 use function array_keys;
 use function array_merge;
@@ -736,6 +735,14 @@ class SqlitePlatform extends AbstractPlatform
      * {@inheritDoc}
      */
     public function getForUpdateSQL()
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getForUpdateSkipLockedSQL()
     {
         return '';
     }
