@@ -268,11 +268,6 @@ class PostgreSQLPlatform extends AbstractPlatform
         return true;
     }
 
-    public function createSelectSQLBuilder(): SelectSQLBuilder
-    {
-        return new DefaultSelectSQLBuilder($this, 'FOR UPDATE', null);
-    }
-
     /**
      * {@inheritDoc}
      *
